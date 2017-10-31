@@ -7,7 +7,7 @@ GPIO.setup(GPIO.BOARD)
 class Car:
 
     motor = Motor(7, 11)
-    servo = Servo(pin, frequency, dc_interval)
+    servo = Servo(0, 50, [0.1, 0.2])
 
     def forward(self):
         print('Forward')

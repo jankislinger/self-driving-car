@@ -5,11 +5,8 @@ clock = pygame.time.Clock()
 pygame.init()
 screen = pygame.display.set_mode((640, 480))
 
-BLACK = (  0,   0,   0)
 WHITE = (255, 255, 255)
-BLUE =  (  0,   0, 255)
-GREEN = (  0, 255,   0)
-RED =   (255,   0,   0)
+RED   = (255,   0,   0)
 
 x = 60
 y = 250
@@ -35,26 +32,30 @@ try:
                 if event.key == pygame.K_LEFT:
                     going_left = True
                     going_right = False
-                if event.key == pygame.K_RIGHT:
+                    car.left()
+                elif event.key == pygame.K_RIGHT:
                     going_right = True
                     going_left = False
-                if event.key == pygame.K_UP:
+                    car.left()
+                elif event.key == pygame.K_UP:
                     going_up = True
                     going_down = False
                     car.forward()
-                if event.key == pygame.K_DOWN:
+                elif event.key == pygame.K_DOWN:
                     going_down = True
                     going_up = False
                     car.backward()
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT:
                     going_left = False
-                if event.key == pygame.K_RIGHT:
+                    car.straight()
+                elif event.key == pygame.K_RIGHT:
                     going_right = False
-                if event.key == pygame.K_UP:
+                    car.straight()
+                elif event.key == pygame.K_UP:
                     going_up = False
                     car.stop()
-                if event.key == pygame.K_DOWN:
+                elif event.key == pygame.K_DOWN:
                     going_down = False
                     car.stop()
             elif event.type == pygame.QUIT:
