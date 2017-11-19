@@ -36,7 +36,7 @@ try:
                 elif event.key == pygame.K_RIGHT:
                     going_right = True
                     going_left = False
-                    car.left()
+                    car.right()
                 elif event.key == pygame.K_UP:
                     going_up = True
                     going_down = False
@@ -75,3 +75,4 @@ try:
 
 finally:
     pygame.quit()
+    GPIO.cleanup()
