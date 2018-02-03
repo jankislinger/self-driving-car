@@ -20,58 +20,32 @@ running = True
 
 tank = Tank()
 
+
+def process_event(event):
+    if event.type == pygame.KEYDOWN and event.key == pygame.K_q:
+        global running
+        running = False
+    elif event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
+        action = event.type == pygame.KEYDOWN
+        if event.key == pygame.K_LEFT:
+            button = 'lt'
+        elif event.key == pygame.K_RIGHT:
+            button = 'rt'
+        elif event.key == pygame.K_UP:
+            button = 'fwd'
+        elif event.key == pygame.K_DOWN:
+            button = 'bwd'
+        tank.button_action(button, action)
+    elif event.type == pygame.QUIT:
+        global running
+        running = False
+
 try:
     while running:
         clock.tick(20)
 
-        screen.fill(WHITE)
-        pygame.draw.circle(screen, RED, [x, y], 40)
-
         for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT:
-                    going_left = True
-                    going_right = False
-                    car.left()
-                elif event.key == pygame.K_RIGHT:
-                    going_right = True
-                    going_left = False
-                    car.right()
-                elif event.key == pygame.K_UP:
-                    going_up = True
-                    going_down = False
-                    car.forward()
-                elif event.key == pygame.K_DOWN:
-                    going_down = True
-                    going_up = False
-                    car.backward()
-            elif event.type == pygame.KEYUP:
-                if event.key == pygame.K_LEFT:
-                    going_left = False
-                    car.straight()
-                elif event.key == pygame.K_RIGHT:
-                    going_right = False
-                    car.straight()
-                elif event.key == pygame.K_UP:
-                    going_up = False
-                    car.stop()
-                elif event.key == pygame.K_DOWN:
-                    going_down = False
-                    car.stop()
-            elif event.type == pygame.QUIT:
-                running = False
-
-        if going_left:
-            x -= 1
-        elif going_right:
-            x += 1
-
-        if going_up:
-            y -= 1
-        elif going_down:
-            y += 1
-
-        pygame.display.flip()
+            process_event(event)
 
 finally:
     pygame.quit()
