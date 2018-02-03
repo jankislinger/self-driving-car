@@ -1,5 +1,5 @@
 import pygame
-from car_control import *
+from vehicle.tank import Tank
 
 clock = pygame.time.Clock()
 pygame.init()
@@ -18,7 +18,7 @@ going_down = False
 
 running = True
 
-car = Car()
+tank = Tank()
 
 try:
     while running:
