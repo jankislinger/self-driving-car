@@ -48,8 +48,8 @@ class Tank:
                 self.stop()
 
     def forward(self):
-        self.right_track.backward()
-        self.left_track.backward()
+        self.right_track.forward()
+        self.left_track.forward()
 
     def backward(self):
         self.right_track.backward()
@@ -75,11 +75,13 @@ class Tank:
         self.right_track.stop()
         self.left_track.stop()
 
-    def left(self):
-        self.servo.left()
-
     def right(self):
-        self.servo.right()
+        self.right_track.backward()
+        self.left_track.forward()
+
+    def left(self):
+        self.right_track.forward()
+        self.left_track.backward()
 
     def get_status(self):
         return {'right_track': self.right_track.status,

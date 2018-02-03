@@ -1,4 +1,5 @@
 import pygame
+from RPi import GPIO
 from vehicle.tank import Tank
 
 clock = pygame.time.Clock()
