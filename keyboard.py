@@ -23,9 +23,11 @@ tank = Tank()
 
 
 def process_event(event):
+
     if event.type == pygame.KEYDOWN and event.key == pygame.K_q:
         global running
         running = False
+
     elif event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
         action = event.type == pygame.KEYDOWN
         if event.key == pygame.K_LEFT:
@@ -36,7 +38,12 @@ def process_event(event):
             button = 'fwd'
         elif event.key == pygame.K_DOWN:
             button = 'bwd'
-        tank.button_action(button, action)
+        else:
+            button = None
+
+        if button is not None:
+            tank.button_action(button, action)
+
     elif event.type == pygame.QUIT:
         global running
         running = False
@@ -49,5 +56,6 @@ try:
             process_event(event)
 
 finally:
+    tank.saver.text_file.close()
     pygame.quit()
     GPIO.cleanup()
