@@ -6,8 +6,8 @@ from selfcar.simulator import Simulator
 
 parser = argparse.ArgumentParser(description='Some description.')
 
-parser.add_argument('--vehicle', dest='vehicle', default='vehicle')
-parser.add_argument('--driver', dest='driver', default='driver')
+parser.add_argument('vehicle', default='vehicle')
+parser.add_argument('driver', default='driver')
 
 parser.add_argument('--file_name', dest='file_name', default='misc/simulator.mp4')
 args = parser.parse_args()
