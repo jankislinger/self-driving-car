@@ -1,6 +1,6 @@
 import pygame
 from RPi import GPIO
-from vehicle.tank import Tank
+from tank_old import Tank
 
 clock = pygame.time.Clock()
 pygame.init()
@@ -21,32 +21,6 @@ running = True
 
 tank = Tank()
 
-
-def process_event(event):
-
-    if event.type == pygame.KEYDOWN and event.key == pygame.K_q:
-        global running
-        running = False
-
-    elif event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
-        action = event.type == pygame.KEYDOWN
-        if event.key == pygame.K_LEFT:
-            button = 'lt'
-        elif event.key == pygame.K_RIGHT:
-            button = 'rt'
-        elif event.key == pygame.K_UP:
-            button = 'fwd'
-        elif event.key == pygame.K_DOWN:
-            button = 'bwd'
-        else:
-            button = None
-
-        if button is not None:
-            tank.button_action(button, action)
-
-    elif event.type == pygame.QUIT:
-        global running
-        running = False
 
 try:
     while running:
