@@ -29,7 +29,13 @@ class ManualDriver(Driver):
         if 'frame' in data and data['frame'] is not None:
             surface = frame_as_surface(data['frame'])
             self.screen.blit(surface, (0, 0))
-            pygame.display.update()
+        if 'status' in data:
+            status = data['status']
+            draw_polygon(self.screen, False, True,  status['power'] > 0)
+            draw_polygon(self.screen, False, False, status['power'] < 0)
+            draw_polygon(self.screen, True,  False, status['steer'] > 0)
+            draw_polygon(self.screen, True,  True,  status['steer'] < 0)
+        pygame.display.update()
 
     def process_events(self):
         events = pygame.event.get(key_types + [pygame.QUIT])
@@ -70,3 +76,20 @@ def print_event(event):
 def frame_as_surface(frame):
     frame = np.rot90(np.flip(frame, 1))
     return pygame.surfarray.make_surface(frame)
+
+
+def arrow_points(horizontal, flipped):
+    d = 15
+    center = [580, 300]
+    offset = [[d, -10], [5+d, 0], [d, 10], [25+d, 0]]
+    if not horizontal:
+        offset = [list(reversed(point)) for point in offset]
+    if flipped:
+        offset = [[-x for x in point] for point in offset]
+    return [[c + x for x, c in zip(point, center)] for point in offset]
+
+
+def draw_polygon(screen, horizontal, flipped, active):
+    width = 3
+    color = (0, 0, 0)
+    pygame.draw.polygon(screen, color, arrow_points(horizontal, flipped), 0 if active else width)

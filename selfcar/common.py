@@ -154,12 +154,12 @@ class Motor:
     def forward(self, power=1):
         self.status = power
         self.backward_pin.stop()
-        self.forward_pin.start(power)
+        self.forward_pin.start(power * 100)
 
     def backward(self, power=1):
         self.status = -power
         self.forward_pin.stop()
-        self.backward_pin.start(power)
+        self.backward_pin.start(power * 100)
 
     def stop(self):
         self.status = 0
@@ -172,7 +172,7 @@ class PwmPin:
     def __init__(self):
         pass
 
-    def start(self, x):
+    def start(self, dc):
         pass
 
     def stop(self):
