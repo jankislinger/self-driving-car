@@ -1,8 +1,10 @@
 class Vehicle:
 
+    status = None
+    driver = None
+
     def __init__(self):
         self.status = {'steer': 0, 'power': 0}
-        self.driver = None
 
     def drive(self, power, steer):
         self.power(power, False)
@@ -54,6 +56,73 @@ class Vehicle:
         return {'status': self.status}
 
 
+class Tank(Vehicle):
+
+    def __init__(self, track_channels):
+        super().__init__()
+        self.right_track = Motor(track_channels['right'])
+        self.left_track = Motor(track_channels['right'])
+
+    def update_driving(self):
+        if self.status['power'] > 0:
+            if self.status['steer'] > 0:
+                self.forward_right()
+            elif self.status['steer'] < 0:
+                self.forward_left()
+            else:
+                self.forward()
+        elif self.status['power'] < 0:
+            if self.status['steer'] > 0:
+                self.backward_right()
+            elif self.status['steer'] < 0:
+                self.backward_left()
+            else:
+                self.backward()
+        else:
+            if self.status['steer'] > 0:
+                self.right()
+            elif self.status['steer'] < 0:
+                self.left()
+            else:
+                self.stop()
+
+    def forward(self):
+        self.right_track.forward()
+        self.left_track.forward()
+
+    def backward(self):
+        self.right_track.backward()
+        self.left_track.backward()
+
+    def forward_right(self):
+        self.right_track.stop()
+        self.left_track.forward()
+
+    def backward_right(self):
+        self.right_track.stop()
+        self.left_track.backward()
+
+    def forward_left(self):
+        self.right_track.forward()
+        self.left_track.stop()
+
+    def backward_left(self):
+        self.right_track.backward()
+        self.left_track.stop()
+
+    def stop(self):
+        self.right_track.stop()
+        self.left_track.stop()
+
+    def right(self):
+        self.right_track.backward()
+        self.left_track.forward()
+
+    def left(self):
+        self.right_track.forward()
+        self.left_track.backward()
+
+
 class Driver:
 
     def __init__(self):
@@ -71,3 +140,40 @@ class Driver:
     def process_data(self, data):
         print('Driver is processing data.')
         self.last_data = data
+
+
+class Motor:
+
+    def __init__(self, channels, pwm_frequency):
+        self.channels = channels
+        self.pwm_frequency = pwm_frequency
+        self.status = 0
+        self.forward_pin = PwmPin()
+        self.backward_pin = PwmPin()
+
+    def forward(self, power=1):
+        self.status = power
+        self.backward_pin.stop()
+        self.forward_pin.start(power)
+
+    def backward(self, power=1):
+        self.status = -power
+        self.forward_pin.stop()
+        self.backward_pin.start(power)
+
+    def stop(self):
+        self.status = 0
+        self.backward_pin.stop()
+        self.forward_pin.stop()
+
+
+class PwmPin:
+
+    def __init__(self):
+        pass
+
+    def start(self, x):
+        pass
+
+    def stop(self):
+        pass

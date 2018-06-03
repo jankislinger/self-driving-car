@@ -1,5 +1,7 @@
 import RPi.GPIO as GPIO
 
+from selfcar.common import Tank, Motor
+
 
 def gpio_start():
     print('initializing GPIO')
@@ -11,22 +13,19 @@ def gpio_stop():
     GPIO.cleanup()
 
 
-class Motor:
+class GpioTank(Tank):
+
+    def __init__(self, track_channels):
+        super().__init__(track_channels)
+        self.right_track = GpioMotor(track_channels['right'])
+        self.left_track = GpioMotor(track_channels['right'])
+
+
+class GpioMotor(Motor):
 
     def __init__(self, channels, pwm_frequency=50):
+        super().__init__(channels, pwm_frequency)
         GPIO.setup(channels['forward'], GPIO.OUT)
         GPIO.setup(channels['backward'], GPIO.OUT)
         self.forward_pin = GPIO.PWM(channels['forward'], pwm_frequency)
         self.backward_pin = GPIO.PWM(channels['backward'], pwm_frequency)
-
-    def forward(self, power=1):
-        self.backward_pin.stop()
-        self.forward_pin.start(power)
-
-    def backward(self, power=1):
-        self.forward_pin.stop()
-        self.backward_pin.start(power)
-
-    def stop(self):
-        self.backward_pin.stop()
-        self.forward_pin.stop()
